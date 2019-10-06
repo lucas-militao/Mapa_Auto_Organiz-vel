@@ -1,4 +1,5 @@
 import numpy as np
+from functions import Normalization as nm
 from functions import MatrixGenerator as mg
 
 def euclideanNorm(x, w):
@@ -14,24 +15,26 @@ def adjustWeights(w, n, x):
 
 def train(entradas, pesos, taxaAprendizagem):
 
-    epoca = 0
-    precisao = 0,1
-    finish = False
+    x = nm.normalization(entradas)
+    w = nm.normalization(pesos)
+
     dist = mg.zeroVector(np.size(pesos[:,0]))
     menorDistancia = 0
 
-    while(epoca < 100 and epoca == False):
+    epoca = 0
 
-        for i in range(np.size(entradas[:,0])):
-            for j in range(np.size(pesos[:,0])):
+    while(epoca < 5):
 
-                dist[j] = euclideanNorm(entradas[i], pesos[j])
+        for i in range(np.size(x[:,0])):
+            for j in range(np.size(w[:,0])):
+
+                dist[j] = euclideanNorm(x[i], w[j])
 
             menorDistancia = np.argmin(dist)
 
-            pesos[menorDistancia, :] = adjustWeights(pesos[menorDistancia], taxaAprendizagem, entradas[i])
+            w[menorDistancia, :] = adjustWeights(w[menorDistancia], taxaAprendizagem, x[i])
+            w[menorDistancia, :] = nm.normalization(w[menorDistancia, :])
 
-        # epoca += 1
-        epoca = 100
+        epoca += 1
 
-    return pesos
+    return w

@@ -1,5 +1,7 @@
 import numpy as np
+
 from training import  CompetitiveAlgorithm as ca
+from scipy import stats as st
 
 def main():
 
