@@ -1,9 +1,11 @@
 import numpy as np
 
 from training import  CompetitiveAlgorithm as ca
-from scipy import stats as st
+from functions import TreatData as tdata
 
 def main():
+
+    arquivoX = open("../Xlarge.txt")
 
     taxaAprendizagem = 0.3
     x = np.matrix('0.35 0.8')
@@ -15,8 +17,7 @@ def main():
 
     print(ca.train(x,w,taxaAprendizagem))
 
-
-
+    print(tdata.getData(arquivoX))
 
 
 main()
