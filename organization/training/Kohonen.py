@@ -16,7 +16,7 @@ def train(qtdNeuronios, entradas, taxaAprendizagem, raioVizinhanca, precisao):
     #inicializa a matriz que irá receber as distâncias euclidianas
     dist = mg.zeroMatrix(np.size(x[:,0]), N)
     #vetor que irá receber o índice que aponta para o neurônio vencedor
-    vencedor = mg.zeroVector(np.size(w[:,0]))
+    vencedor = mg.zeroVector(np.size(x[:,0]))
 
     while(epoca < 10000 and pare == False):
 
@@ -26,11 +26,14 @@ def train(qtdNeuronios, entradas, taxaAprendizagem, raioVizinhanca, precisao):
                 dist[i,j] = cal.euclideanNorm(x[i], w[j])
         #looping que irá armazenar os índices dos neurônios vencedores
         for i in range(np.size(vencedor)):
-            vencedor[i] = np.argmin(dist[i,:])
+            vencedor[i] = np.argmin(dist[i,:]) #O número de vencedores é igual ao número de padrões de entrada. Um vencedor para cada padrão
+        #looping que irá calcular e armazenar os pesos com seus respectivos ajustes dos neurônios vencedores
+        for i in range(np.size(vencedor)):
+            current = int(vencedor[i])
+            w[current] = cal.adjustWeights(w[current], n, x[i])
 
 
         epoca = 10000
         epoca += 1
 
-
-    return vencedor
+    return w
