@@ -33,6 +33,7 @@ def train(qtdNeuronios, entradas, taxaAprendizagem, raioVizinhanca, precisao):
             w[current] = cal.adjustWeights(w[current], n, x[i])
 
 
+
         epoca = 10000
         epoca += 1
 
