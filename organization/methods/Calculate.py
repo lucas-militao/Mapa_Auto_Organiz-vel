@@ -24,10 +24,14 @@ def adjustWeightsRBiggerThan1(w, wNeighbor, n, x, precisao):
     return resultado
 
 def checkChange(x, w, precisao):
-    change = abs(x - w)
-    for i in range(np.size(change)):
-        if(change[0,i] > precisao):
-            return False
+    change = np.abs(x - w)
+    change = np.min(change)
+
+    if(change > precisao):
+        return False
+    # for i in range(np.size(change)):
+    #     if(change[0,i] > precisao):
+    #         return False
     return True
 
 
