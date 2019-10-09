@@ -22,7 +22,7 @@ def train(entradas, pesos, taxaAprendizagem):
 
             menorDistancia = np.argmin(dist)
 
-            w[menorDistancia, :] = cal.adjustWeights(w[menorDistancia], taxaAprendizagem, x[i])
+            w[menorDistancia, :] = cal.adjustWeightsWinner(w[menorDistancia], taxaAprendizagem, x[i])
             w[menorDistancia, :] = nm.normalization(w[menorDistancia, :])
 
         epoca += 1
