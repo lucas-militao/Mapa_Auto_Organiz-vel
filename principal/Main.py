@@ -26,7 +26,9 @@ def main():
                   '1 0;'
                   '1 1')
 
-    print(ko.trainUnidimensional(9, data, taxaAprendizagem, raio, precisao))
+    print(ko.trainUnidimensional(4, x, taxaAprendizagem, raio, precisao))
+
+    # print(ko.trainUnidimensional(9, data, taxaAprendizagem, raio, precisao))
 
     # print(ko.trainUnidimensional(numeroNeuronios, data, taxaAprendizagem, raio, precisao))
 
