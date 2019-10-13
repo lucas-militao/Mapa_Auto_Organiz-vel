@@ -8,7 +8,7 @@ data = td.getData(arquivoX)
 precisao = pow(10, -4)
 taxaAprendizagem = 0.1
 numeroNeuronios = 9
-raio = 0
+raio = 2
 
 def main():
     #exercício dos slides
@@ -21,14 +21,14 @@ def main():
     #               '0.2 0.8')
 
     #porta xor
-    x = np.matrix('0 0;'
-                  '0 1;'
-                  '1 0;'
-                  '1 1')
+    # x = np.matrix('0 0;'
+    #               '0 1;'
+    #               '1 0;'
+    #               '1 1')
 
-    print(ko.trainUnidimensional(4, x, taxaAprendizagem, raio, precisao))
+    # ko.trainUnidimensional(4, x, taxaAprendizagem, precisao, raio)
 
-    # print(ko.trainUnidimensional(9, data, taxaAprendizagem, raio, precisao))
+    print(ko.trainUnidimensional(9, data, taxaAprendizagem, precisao, raio))
 
     # print(ko.trainUnidimensional(numeroNeuronios, data, taxaAprendizagem, raio, precisao))
 
@@ -38,3 +38,12 @@ def main():
 
 
 main()
+
+#Arquivo Xlarge.txt
+# A1 A2
+# B1 B2
+# C1 C2
+# D1 D2
+# E1 E2
+# J1 J2
+# K1 K2
