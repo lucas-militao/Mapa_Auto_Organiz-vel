@@ -1,6 +1,7 @@
 import numpy as np
 
 from functions import TreatData as td
+from functions import MatrixGenerator as mg
 from organization.training import Kohonen as ko
 
 arquivoX = open("../Xlarge.txt")
@@ -14,11 +15,11 @@ def main():
     #exercício dos slides
     # taxaAprendizagem = 0.3
     # x = np.matrix('0.35 0.8')
-    # w = np.matrix('0.2 0.3;'
-    #               ' 0.6 0.5; '
-    #               '0.4 0.7; '
-    #               '0.9 0.6; '
-    #               '0.2 0.8')
+    w = np.matrix('0.2 0.3;'
+                  ' 0.6 0.5; '
+                  '0.4 0.7; '
+                  '0.1 0.6; '
+                  '0.2 0.8')
 
     #porta xor
     # x = np.matrix('0 0;'
@@ -28,15 +29,9 @@ def main():
 
     # ko.trainUnidimensional(4, x, taxaAprendizagem, precisao, raio)
 
-    print(ko.trainUnidimensional(9, data, taxaAprendizagem, precisao, raio))
+    # ko.trainUnidimensional(25, data, taxaAprendizagem, precisao, raio)
 
-    # print(ko.trainUnidimensional(numeroNeuronios, data, taxaAprendizagem, raio, precisao))
-
-    # print(ca.train(x, w, taxaAprendizagem))
-
-    # print(tdata.getData(arquivoX))
-
-
+    ko.trainBidimensional(numeroNeuronios, data, taxaAprendizagem, raio, precisao)
 main()
 
 #Arquivo Xlarge.txt

@@ -11,6 +11,9 @@ def zeroVector(numberOfElements):
 
 def randomVectorHighLow(high, low, linhas, colunas):
     return ( np.random.rand(linhas, colunas) * (high - low) ) + low
-    # return high * np.random.random_sample((linhas, colunas)) + low
-    # return np.random.randint(low, high, size=(linhas, coluna))
+
+def emptyStringVector(quantidade):
+    return ["" for x in range(quantidade)]
+
+
 
