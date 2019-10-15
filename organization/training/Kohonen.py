@@ -14,14 +14,6 @@ def __operacao(x, w):
 
     return vencedor
 
-# def __faseOperacao(x, w):
-#     dist = mg.zeroVector(np.size(w[:, 0]))
-#
-#     for i in range(np.size(dist)):
-#         dist[i] = cal.euclideanNorm(x, w[i])
-#
-#     vencedor = np.argmin(dist)
-
 
 def __unidimensional(qtdNeuronios, entradas, pesos, taxaAprendizagem, precisao, raio):
     N = qtdNeuronios
@@ -30,42 +22,55 @@ def __unidimensional(qtdNeuronios, entradas, pesos, taxaAprendizagem, precisao, 
     n = taxaAprendizagem
     r = raio
     epoca = 0
-    pare = False
+
+    pare1 = False
+    pare2 = False
+    pare3 = False
 
     # inicializa o vetor que irá receber as distâncias euclidianas
     dist = mg.zeroVector(N)
 
-    while(epoca < 100000 and pare != True):
+    while(epoca < 1000 and (pare1 != True or pare2 != True or pare3 != True)):
 
         #calcula as distancias euclidianas
         for i in range(np.size(dist)):
-            dist[i] = cal.euclideanNorm(x, w[i])
+            dist[i] = np.linalg.norm(x - w[i])
+            # dist[i] = cal.euclideanNorm(x, w[i])
         #definir vencedor
         vencedor = np.argmin(dist)
+        wOld = w[vencedor]
         #ajustar pesos do vencedor
         w[vencedor] = cal.adjustWeightsWinner(w[vencedor], n, x)
         if(r > 0):
             #Para r = 1, será realizado o ajuste utilizando apenas a expressão com n/2
             if(r == 1):
                 try:
+                    wOld = np.hstack(w[vencedor + r])
+                    wOld = np.hstack(w[vencedor - r])
                     w[vencedor + r] = cal.adjustWeightsR1(w[vencedor + r], n, x)
+                    pare1 = cal.checkChange(w[vencedor + r], wOld, precisao)
                     w[vencedor - r] = cal.adjustWeightsR1(w[vencedor - r], n, x)
+                    pare2 = cal.checkChange(w[vencedor - r], wOld, precisao)
                 except:
                     print()
             #Para r > 1, será realizado o ajuste dos vizinhos utilizando as duas expressões
             elif(r > 1):
                 try:
                     for j in range(r):
+                        wOld = np.hstack(w[vencedor + r])
+                        wOld = np.hstack(w[vencedor - r])
                         w[vencedor + r] = cal.adjustWeightsRBiggerThan1(w, w[vencedor + r], n, x, precisao)
+                        pare1 = cal.checkChange(w[vencedor + r], wOld, precisao)
                         w[vencedor - r] = cal.adjustWeightsRBiggerThan1(w, w[vencedor - r], n, x, precisao)
+                        pare2 = cal.checkChange(w[vencedor - r], wOld, precisao)
                 except:
                     print()
 
         #verificar se houve mudança significativa
-        pare = cal.checkChange(x, w[vencedor], precisao)
+        pare3 = cal.checkChange(w[vencedor], wOld, precisao)
 
         epoca += 1
-    # print(epoca)
+    print(epoca)
     return w
 
 def trainUnidimensional (qtdNeuronios, entradas, taxaAprendizagem, precisao, raio):
@@ -74,11 +79,9 @@ def trainUnidimensional (qtdNeuronios, entradas, taxaAprendizagem, precisao, rai
     n = taxaAprendizagem
     r = raio
 
-    epoca = 0
-    pare = False
-
     #inicializando a matriz de pesos com valores entre 1 e -1
     w = mg.randomVectorHighLow(1, -1, N, np.size(x[0,:]))
+    wOld = mg.randomVectorHighLow(1, -1, N, np.size(x[0,:]))
 
     #treinamento
     for i in range(np.size(x[:,0])):
@@ -100,81 +103,18 @@ def trainUnidimensional (qtdNeuronios, entradas, taxaAprendizagem, precisao, rai
         # print("para a amostra {}" .format(i) +
         #       " o neuronio foi: {}" .format(v))
 
-def mapaKohonen(numeroNeuronios):
-    tam = int(numeroNeuronios ** (1/2))
-    matriz = mg.zeroMatrix(tam, tam)
-    count = 0
-    for i in range(tam):
-        for j in range(tam):
-            matriz[i,j] = count
-            count += 1
-    return matriz
+def mapaKohonen(qtdNeuronio):
+    qtd = int(qtdNeuronio**(1/2))
+    matrix = mg.zeroMatrix(qtd,qtd)
+    indice = 0
+    for i in range(np.size(matrix[:,0])):
+        for j in range(np.size(matrix[0,:])):
+            matrix[i,j] = indice
+            indice += 1
+    return matrix
 
-def bidimensional(numeroNeuronios, pesos, entradas, taxaAprendizagem, raio, precisao):
-    N = numeroNeuronios
-    w = pesos
-    x = entradas
-    n = taxaAprendizagem
-    r = raio
-    p = precisao
-    parar = False
-
-    dist = mg.zeroVector(N)
-
-    epoca = 0
-
-    while(epoca < 100 and parar == False):
-        # calcula as distancias euclidianas
-        for i in range(np.size(dist)):
-            dist[i] = cal.euclideanNorm(x, w[i])
-        # definir vencedor
-        vencedor = np.argmin(dist)
-        # ajustar pesos do vencedor
-        w[vencedor] = cal.adjustWeightsWinner(w[vencedor], n, x)
-        # ajustar pesos dos vizinhos
-        if (r == 1):
-            vizinhos = np.array((vencedor - 3, vencedor + 1, vencedor - 1, vencedor + 3))
-            for i in range(vizinhos.size):
-                try:
-                    w[vizinhos[i]] = cal.adjustWeightsR1(w[vizinhos[i]], n, x)
-                except:
-                    print()
-        elif (r > 1):
-            vizinhos = np.array((vencedor + 1, vencedor - 1,
-                                 vencedor + 2, vencedor - 2,
-                                 vencedor + 3, vencedor - 3,
-                                 vencedor + 4, vencedor - 4))
-            for i in range(vizinhos.size):
-                try:
-                    w[vizinhos[i]] = cal.adjustWeightsRBiggerThan1(w[vencedor], w[vizinhos[i]], n, x, precisao)
-                except:
-                    print()
-
-            parar = cal.checkChange(x, w[vencedor], precisao)
-            epoca += 1
-
-        print(epoca)
-        return w
-
-
-
-
-
-def trainBidimensional(numeroNeuronios, entradas, taxaAprendizagem, raio, precisao):
-    N = numeroNeuronios
-    x = entradas
-    n = taxaAprendizagem
-    r = raio
-    p = precisao
-
-    w = mg.randomVectorHighLow(1, -1, N, np.size(x[0,:]))
-    mapa = mapaKohonen(N)
-
-
-    for i in range(np.size(x[:,0])):
-        w = bidimensional(numeroNeuronios, w, x[i], taxaAprendizagem, r, p)
-
-    # print(w)
+def neighborhood(linhas, colunas, raio):
+    vizinhos = np.array([[]])
 
 
 

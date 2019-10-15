@@ -29,18 +29,25 @@ def adjustWeightsRBiggerThan1(w, wNeighbor, n, x, precisao):
     resultado = wNeighbor + n * neiOp * (x - wNeighbor)
     return resultado
 #Checagem de mudança significativa
-def checkChange(x, w, precisao):
-    change = np.abs(x - w)
-    change = np.min(change)
+def checkChange(w, wOld, precisao):
+    changes = abs(w - wOld)
 
-    if(change > precisao):
-        return False
+    for i in range(np.size(changes)):
+        if(changes[i] > precisao):
+            return False
+
     return True
 
-    # for i in range(np.size(change)):
-    #     if(change[0,i] > precisao):
-    #         return False
-
-
-
-
+def distanceFromTwoPoints(x1, y1, x2, y2):
+    if not (x1 == x2 and y1 == y2):
+        if x1 - x2 == 0 or y1 - y2 == 0:
+            if x1 - x2 == 0:
+                return abs(y1 - y2)
+            elif y1 - y2 == 0:
+                return abs(x1 - x2)
+            else:
+                return 0.0
+        else:
+            return np.hypot(abs(x1 - x2), abs(y1 - y2))
+    else:
+        return 0.0

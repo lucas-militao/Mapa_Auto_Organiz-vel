@@ -3,13 +3,14 @@ import numpy as np
 from functions import TreatData as td
 from functions import MatrixGenerator as mg
 from organization.training import Kohonen as ko
+from organization.methods import Calculate as cal
 
 arquivoX = open("../Xlarge.txt")
 data = td.getData(arquivoX)
 precisao = pow(10, -4)
 taxaAprendizagem = 0.1
 numeroNeuronios = 9
-raio = 2
+raio = 1
 
 def main():
     #exercício dos slides
@@ -31,7 +32,12 @@ def main():
 
     # ko.trainUnidimensional(25, data, taxaAprendizagem, precisao, raio)
 
-    ko.trainBidimensional(numeroNeuronios, data, taxaAprendizagem, raio, precisao)
+    # ko.trainBidimensional(numeroNeuronios, data, taxaAprendizagem, raio, precisao)
+
+    result = cal.distanceFromTwoPoints(1,2,0,1)
+    print(result)
+
+
 main()
 
 #Arquivo Xlarge.txt
